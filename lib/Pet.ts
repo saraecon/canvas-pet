@@ -1,8 +1,8 @@
-import { Assignment } from "./Assignment";
+import { Assignment } from "./Assignment"; 
 import { CanvasIntegrator } from "./CanvasIntegrator";
 
 export class Pet {
-    public name: string | null = null;
+    public name: string = "Pet";
     private currentFood: number;
     public readonly MAX_FOOD: number = 100;
     public readonly HUNGER_THRESHOLD: number = 80;
@@ -11,6 +11,7 @@ export class Pet {
     private hat: Hat;
     private readonly birthday: Date;
     private storedFood: number;
+    private state: string; // New property to track the pet's state
 
     private ci: CanvasIntegrator;
     public pendingAssignments: Assignment[];
@@ -24,6 +25,17 @@ export class Pet {
         this.name = name;
         this.currentFood = currentFood;
         this.storedFood = storedFood;
+        this.state = "idle"; // Initialize state to "idle"
+    }
+
+    // Method to get the current state
+    public getState(): string {
+        return this.state;
+    }
+
+    // Method to set a new state
+    public setState(newState: string): void {
+        this.state = newState;
     }
 
     public getCurrentFood(): number {
@@ -55,4 +67,3 @@ export class Pet {
 export class Hat {
     private location: string;
 }
-

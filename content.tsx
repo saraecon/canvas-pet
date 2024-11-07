@@ -3,31 +3,41 @@ import type {
   PlasmoGetOverlayAnchor,
   PlasmoWatchOverlayAnchor
 } from "plasmo"
-import React from "react"
+import React, { useEffect } from "react"
+import PetController from "./lib/PetController"
 
 export const config: PlasmoCSConfig = {
-  // This will show up on canvas's pages
-  //   matches: ["https://uk.instructure.com/*","https://uk.instructure.com/"],
   world: "MAIN",
   run_at: "document_idle"
 }
 
-export const getOverlayAnchor: PlasmoGetOverlayAnchor = async () =>
-  document.querySelector("#header")
-export const watchOverlayAnchor: PlasmoWatchOverlayAnchor = (
-  updatePosition
-) => {
+// Modified getOverlayAnchor to handle null case
+export const getOverlayAnchor: PlasmoGetOverlayAnchor = async () => {
+  const anchor = document.querySelector("#header")
+  if (!anchor) {
+    throw new Error("Could not find #header element for overlay anchor")
+  }
+  return anchor
+}
+
+export const watchOverlayAnchor: PlasmoWatchOverlayAnchor = (updatePosition) => {
   const interval = setInterval(() => {
     updatePosition()
   }, 5000)
 
-  // Clear the interval when unmounted
   return () => {
     clearInterval(interval)
   }
 }
 
 export default function Main() {
+  // Initialize PetController instance
+  const petController = new PetController()
+
+  useEffect(() => {
+    petController.start() // Start the pet controller on mount
+  }, [])
+
   return (
     <div
       style={{
@@ -45,7 +55,10 @@ export default function Main() {
           backgroundColor: "#ccc",
           borderRadius: "5px",
           width: "256px",
-          height: "256px"
+          height: "256px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}>
         <p>Canvas Pet Goes Here!</p>
       </div>

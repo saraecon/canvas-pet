@@ -9,8 +9,6 @@ class PetController {
     private notificationQueue: Queue<Notification>;
     private scheduledUpdate: Date;
 
-    // public notifWall: NotificationWall;
-
     constructor() {
         this.pet = new Pet();
         this.notificationQueue = new Queue<Notification>();
@@ -21,11 +19,16 @@ class PetController {
     start(): void {
         this.pet = new Pet();
         this.notificationQueue = new Queue<Notification>();
+        this.pet.setState("idle"); // Set pet state to idle for testing
     }
 
-    // Update is called once per frame
+    // Placeholder update method for idle state
+    isIdle(): boolean {
+        return true; // Always returns true for testing purposes
+    }
+
+    // Additional methods kept for uniformity with other group members
     update(): void {
-        // TESTING
         const notif = new AutoFeedNotification(this.pet, 9, "testing");
         this.notificationQueue.enqueue(notif);
     }
@@ -79,3 +82,5 @@ class PetController {
         return new Date(currentTime.getTime() + 30 * 60000); // Add 30 minutes
     }
 }
+
+export default PetController;
